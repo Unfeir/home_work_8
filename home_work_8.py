@@ -6,9 +6,9 @@ def get_birthdays_per_week(users):
     interval = timedelta(weeks=1)
     users_for_congratulate = {}
     for user in users:
-        user["birthday"] = user["birthday"].replace(year=current_date.year) # changing birthday year to current for a correct week and weekday
-        if current_date < user["birthday"] <= current_date + interval:
-            day_name = "Monday" if user["birthday"].weekday() in (5,6) else user["birthday"].strftime("%A")
+        # user["birthday"] = user["birthday"].replace(year=current_date.year) # changing birthday year to current for a correct week and weekday
+        if current_date < user["birthday"].replace(year=current_date.year) <= current_date + interval:
+            day_name = "Monday" if user["birthday"].replace(year=current_date.year).weekday() in (5,6) else user["birthday"].replace(year=current_date.year).strftime("%A")
             if day_name in users_for_congratulate:
                 users_for_congratulate[day_name].append(user["name"])
             else:
@@ -17,8 +17,7 @@ def get_birthdays_per_week(users):
 
                 
     for day, user in users_for_congratulate.items():
-        users = ", ".join(user)
-        print(f"{day}: {users}")
+        print(f"{day}: {', '.join(user)}")
             
 # example
 # Monday: Bill, Jill
@@ -35,9 +34,11 @@ users = [{"name": "John", "birthday": datetime(year=1990, month=10, day=10)}, #b
          {"name": "Jess", "birthday": datetime(year=1990, month=10, day=27)},  # too late
          ]
 
+
 get_birthdays_per_week(users)
 
-# current_date = datetime.now() 
-# interval = timedelta(weeks=1)
-# print(current_date)
-# print(current_date + interval)
+# result
+# Monday: Pol, Mary, Pit
+# Tuesday: Garry
+# Wednesday: Davide
+
